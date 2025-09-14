@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Compressor Tool</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333; }
+header { background:#007BFF; color:white; padding:10px 20px; position:sticky; top:0; z-index:1000; }
+header h1 { margin:0; }
+nav a { color:white; margin-right:15px; text-decoration:none; }
+main { padding:20px; }
+section { background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1); margin-bottom:20px; }
+button { padding:10px 20px; margin-top:10px; cursor:pointer; }
+.ads-placeholder { background:#eee; text-align:center; padding:10px; border-radius:5px; margin-bottom:20px; }
+form input, form textarea { width:100%; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ccc; }
+form button { background:#007BFF; color:white; border:none; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Image Compressor Tool</h1>
+<nav>
+<a href="#compress">Compress</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+<a href="#terms">Terms</a>
+<a href="#privacy">Privacy</a>
+<a href="#faq">FAQ</a>
+</nav>
+</header>
+
+<main>
+<!-- Compress Section -->
+<section id="compress">
+<h2>Upload Image to Compress</h2>
+<input type="file" id="imageInput" accept="image/*">
+<button id="compressBtn">Compress & Download</button>
+<div id="output"></div>
+</section>
+
+<div class="ads-placeholder"><p>Ad space</p></div>
+
+<!-- About Section -->
+<section id="about">
+<h2>About This Tool</h2>
+<p>This tool compresses images directly in your browser. Fast, lightweight, and free to use.</p>
+</section>
+
+<div class="ads-placeholder"><p>Ad space</p></div>
+
+<!-- Contact Section -->
+<section id="contact">
+<h2>Contact Us</h2>
+<form id="contactForm">
+<input type="text" name="name" placeholder="Name" required>
+<input type="email" name="email" placeholder="Email" required>
+<textarea name="message" rows="4" placeholder="Message" required></textarea>
+<button type="submit">Send</button>
+</form>
+</section>
+
+<div class="ads-placeholder"><p>Ad space</p></div>
+
+<!-- Terms Section -->
+<section id="terms">
+<h2>Terms of Service</h2>
+<p>Use this tool at your own risk. We are not responsible for any misuse of images uploaded here.</p>
+</section>
+
+<!-- Privacy Section -->
+<section id="privacy">
+<h2>Privacy Policy</h2>
+<p>We do not store or share uploaded images. All compression happens in your browser.</p>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq">
+<h2>Frequently Asked Questions</h2>
+<p><strong>Q:</strong> Does this tool store my images?<br><strong>A:</strong> No, everything happens locally.</p>
+<p><strong>Q:</strong> Supported formats?<br><strong>A:</strong> JPEG, PNG, GIF.</p>
+</section>
+
+</main>
+
+<footer>
+<p>&copy; 2025 Image Compressor Tool</p>
+</footer>
+
+<script>
+const imageInput = document.getElementById('imageInput');
+const compressBtn = document.getElementById('compressBtn');
+const output = document.getElementById('output');
+
+compressBtn.addEventListener('click', () => {
+  const file = imageInput.files[0];
+  if (!file) { alert('Please select an image first!'); return; }
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = (event) => {
+    const img = new Image();
+    img.src = event.target.result;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width / 2;
+      canvas.height = img.height / 2;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'compressed_' + file.name;
+        link.textContent = 'Download Compressed Image';
+        output.innerHTML = '';
+        output.appendChild(link);
+      }, 'image/jpeg', 0.7);
+    }
+  }
+});
+
+// Optional: Contact form submission (dummy)
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  alert('Thank you! Your message has been received.');
+  e.target.reset();
+});
+</script>
+
+</body>
+</html>
